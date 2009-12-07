@@ -8,7 +8,7 @@ require 'color'
 class GameWindow < Gosu::Window
   Wait = 8 
   def initialize
-    super(640, 480, false)
+    super(400, 400, false)
     self.caption = "rotoSquare"
     @board = Board.new(self, 6)
     @cursor = Cursor.new(self, Board::BOARDSIZE)

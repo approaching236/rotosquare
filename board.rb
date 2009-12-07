@@ -1,5 +1,5 @@
 class Board
-  BOARDSIZE = 16
+  BOARDSIZE = 8
   def initialize(window, level)
     @level = level
     @color_generator = Color.new(@level)
