@@ -10,13 +10,15 @@ class GameWindow < Gosu::Window
   def initialize
     super(400, 400, false)
     self.caption = "rotoSquare"
-    @board = Board.new(self, 6)
+    @board = Board.new(self, 3)
     @cursor = Cursor.new(self, Board::BOARDSIZE)
     @wait_timer = 0    
+    @new_piece_timer = @level_piece_refresh_length = 400
   end
 
   def update
     @board.check_for_complete_squares
+    @board.have_squares_fall
 
     if button_down? Gosu::Button::KbLeftControl and @wait_timer == 0
       @cursor.rotate_left(@board)
@@ -48,8 +50,17 @@ class GameWindow < Gosu::Window
       @wait_timer = Wait
     end
 
+    #button lock loop
     if @wait_timer > 0
       @wait_timer -= 1
+    end
+
+    #new piece loop
+    if @new_piece_timer <= 0
+      @board.add_new_piece(self)
+      @new_piece_timer = @level_piece_refresh_length
+    else
+      @new_piece_timer -= 1
     end
 
 #    ["Left", "Right", "Up", "Down"].each do |direction|

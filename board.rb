@@ -9,7 +9,7 @@ class Board
     @board.map! { |i| i = Array.new(BOARDSIZE) }
 
     (0..BOARDSIZE-1).to_a.each do |i|
-      (0..BOARDSIZE-1).to_a.each do |j|
+      ((BOARDSIZE/2+1)..BOARDSIZE-1).to_a.each do |j|
         @board[i][j] = Square.new(window, :color_spec => @color_generator.random)
       end
     end
@@ -53,11 +53,26 @@ class Board
         end
       end
     end
-  #  if (@board[0][0] == @board[0][1] and @board[0][0] == @board[1][1] and @board[0][0] == @board[1][0])
-  #    @board[0][0] = nil
-  #    @board[0][1] = nil
-  #    @board[1][1] = nil
-  #    @board[1][0] = nil
-  #  end
   end
+
+  def have_squares_fall
+    (0..BOARDSIZE-1).to_a.each do |j|
+      (0..BOARDSIZE-2).to_a.each do |k|
+        if(!@board[j][k+1] and @board[j][k])
+          @board[j][k+1] = @board[j][k]
+          @board[j][k] = nil
+        end
+      end
+    end
+  end
+
+  def add_new_piece(window)
+    x = rand(BOARDSIZE)
+    (0..BOARDSIZE-1).to_a.each do |y|
+      if(@board[x][y+1] and !@board[x][y])
+        @board[x][y] = Square.new(window, :color_spec => @color_generator.random)
+      end
+    end
+  end
+
 end
